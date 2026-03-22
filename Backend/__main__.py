@@ -12,6 +12,7 @@ from Backend.pyrofork.bot import Helper, StreamBot
 from Backend.pyrofork.clients import initialize_clients
 from Backend.helper.link_checker import DeadLinkChecker
 from Backend.fastapi.main import app
+from Backend.pyrofork.plugins.channels import _load_channels_from_db
 
 loop = get_event_loop()
 
@@ -37,6 +38,9 @@ async def start_services():
         await initialize_clients()
         await asleep(2)
 
+        await _load_channels_from_db()
+        await asleep(2)
+        
         await setup_bot_commands(StreamBot)
         await asleep(2)
 
@@ -91,6 +95,3 @@ if __name__ == '__main__':
         loop.run_until_complete(stop_services())
         loop.stop()
         logging.shutdown()  
-# Load persisted AUTH_CHANNELs from DB (merged with env var channels)
-        from Backend.pyrofork.plugins.channels import _load_channels_from_db
-        await _load_channels_from_db()
