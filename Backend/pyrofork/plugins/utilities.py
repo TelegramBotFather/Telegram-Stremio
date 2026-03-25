@@ -289,7 +289,7 @@ async def dbcheck_command(client: Client, message: Message):
     try:
         for i in range(1, db.current_db_index + 1):
             storage = db.dbs.get(f"storage_{i}")
-            if not storage:
+            if storage is None:
                 continue
 
             # ───────── MOVIES ─────────
